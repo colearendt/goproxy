@@ -11,6 +11,11 @@ With source code:
 Also to:
 [https://gobyexample.com/hello-world](https://gobyexample.com/hello-world)
 
+## Building for Various Operating Systems
+
+- [Build example](https://kylewbanks.com/blog/cross-compiling-go-applications-for-multiple-operating-systems-and-architectures)
+- [All supported `GOOS` and `GOARCH`](https://github.com/golang/go/blob/master/src/go/build/syslist.go)
+
 ## CA Certificate Resources
 
 - [Set trusted roots in app](https://www.example-code.com/golang/trustedRoots_loadCaCertsPem.asp)
