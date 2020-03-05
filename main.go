@@ -72,10 +72,36 @@ func parseRequestBody(request *http.Request) requestPayloadStruct {
 	return requestPayload
 }
 
+// Log the typeform payload and redirect url
+func logRequestPayload(requestionPayload requestPayloadStruct, proxyUrl string) {
+	log.Printf("proxy_condition: %s, proxy_url: %s\n", requestionPayload.ProxyCondition, proxyUrl)
+}
+
+// Get the url for a given proxy condition
+func getProxyUrl(proxyConditionRaw string) string {
+	proxyCondition := strings.ToUpper(proxyConditionRaw)
+
+	a_condtion_url := os.Getenv("A_CONDITION_URL")
+	b_condtion_url := os.Getenv("B_CONDITION_URL")
+	default_condtion_url := os.Getenv("DEFAULT_CONDITION_URL")
+
+	if proxyCondition == "A" {
+		return a_condtion_url
+	}
+
+	if proxyCondition == "B" {
+		return b_condtion_url
+	}
+
+	return default_condtion_url
+}
+
 // Given a request send it to the appropriate url
 func handleRequestAndRedirect(res http.ResponseWriter, req *http.Request) {
 	requestPayload := parseRequestBody(req)
-  	// ... more to come
+	url := getProxyUrl(requestPayload.ProxyCondition)
+	logRequestPayload(requestPayload, url)
+  // more still to come...
 }
 
 func main() {
