@@ -38,9 +38,44 @@ func logSetup() {
 	log.Printf("Redirecting to Default url: %s\n", default_condtion_url)
 }
 
+type requestPayloadStruct struct {
+	ProxyCondition string `json:"proxy_condition"`
+}
+
+// Get a json decoder for a given requests body
+func requestBodyDecoder(request *http.Request) *json.Decoder {
+	// Read body to buffer
+	body, err := ioutil.ReadAll(request.Body)
+	if err != nil {
+		log.Printf("Error reading body: %v", err)
+		panic(err)
+	}
+
+	// Because go lang is a pain if you read the body then any susequent calls
+	// are unable to read the body again....
+	request.Body = ioutil.NopCloser(bytes.NewBuffer(body))
+
+	return json.NewDecoder(ioutil.NopCloser(bytes.NewBuffer(body)))
+}
+
+// Parse the requests body
+func parseRequestBody(request *http.Request) requestPayloadStruct {
+	decoder := requestBodyDecoder(request)
+
+	var requestPayload requestPayloadStruct
+	err := decoder.Decode(&requestPayload)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return requestPayload
+}
+
 // Given a request send it to the appropriate url
 func handleRequestAndRedirect(res http.ResponseWriter, req *http.Request) {
-  // We will get to this...
+	requestPayload := parseRequestBody(req)
+  	// ... more to come
 }
 
 func main() {
