@@ -125,10 +125,10 @@ func serveReverseProxy(target string, res http.ResponseWriter, req *http.Request
 // Given a request send it to the appropriate url
 func handleRequestAndRedirect(res http.ResponseWriter, req *http.Request) {
 	log.Printf("handleRequestAndRedirect start")
-	requestPayload := parseRequestBody(req)
-	url := getProxyUrl(requestPayload.ProxyCondition)
+	//requestPayload := parseRequestBody(req)
+	url := getProxyUrl("hi")//requestPayload.ProxyCondition)
 
-	logRequestPayload(requestPayload, url)
+	//logRequestPayload(requestPayload, url)
 
 	serveReverseProxy(url, res, req)
 	log.Printf("handleRequestAndRedirect end")
