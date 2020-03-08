@@ -4,11 +4,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-// #define SHORT_VEC_LENGTH(x) (((VECSEXP) (x))->vecsxp.length)
+//#define SHORT_VEC_LENGTH(xx) (((VECSXP) (xx))->vecsxp.length)
 
 SEXP theproxy(SEXP port) {
   SEXP sx = STRING_ELT(port, 0);
   
-  GoString h = { (char*) CHAR(sx), 1 };
+  GoString h = { (char*) CHAR(sx), Rf_xlength(sx) };
   return Rf_ScalarInteger( runProxy(h) );
 }
