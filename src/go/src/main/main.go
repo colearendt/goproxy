@@ -1,4 +1,6 @@
+// according to https://stackoverflow.com/questions/30248259/swig-go-c-source-files-not-allowed-when-not-using-cgo
 package main
+import "C"
 
 import (
 	"bytes"
@@ -134,13 +136,19 @@ func handleRequestAndRedirect(res http.ResponseWriter, req *http.Request) {
 	log.Printf("handleRequestAndRedirect end")
 }
 
-func main() {
-	// Log setup values
-	logSetup()
 
-	// start server
-	http.HandleFunc("/", handleRequestAndRedirect)
-	if err := http.ListenAndServe(getListenAddress(), nil); err != nil {
-		panic(err)
-	}
+//export runProxy
+func runProxy() int {
+//  // Log setup values
+//	logSetup()
+//
+//	// start server
+//	http.HandleFunc("/", handleRequestAndRedirect)
+//	if err := http.ListenAndServe(getListenAddress(), nil); err != nil {
+//		panic(err)
+//	}
+	return 1
 }
+
+
+func main() {}
