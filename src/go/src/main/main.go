@@ -139,14 +139,14 @@ func handleRequestAndRedirect(res http.ResponseWriter, req *http.Request) {
 
 //export runProxy
 func runProxy() int {
-//  // Log setup values
-//	logSetup()
-//
-//	// start server
-//	http.HandleFunc("/", handleRequestAndRedirect)
-//	if err := http.ListenAndServe(getListenAddress(), nil); err != nil {
-//		panic(err)
-//	}
+  // Log setup values
+	logSetup()
+
+	// start server
+	http.HandleFunc("/", handleRequestAndRedirect)
+	if err := http.ListenAndServe(getListenAddress(), nil); err != nil {
+		panic(err)
+	}
 	return 1
 }
 
