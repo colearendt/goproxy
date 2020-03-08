@@ -28,15 +28,9 @@ func getListenAddress(port string) string {
 }
 
 // Log the env variables required for a reverse proxy
-func logSetup(port string) {
-	a_condtion_url := os.Getenv("A_CONDITION_URL")
-	b_condtion_url := os.Getenv("B_CONDITION_URL")
-	default_condtion_url := os.Getenv("DEFAULT_CONDITION_URL")
-
+func logSetup(port string, url string) {
 	log.Printf("Server will run on: %s\n", getListenAddress(port))
-	log.Printf("Redirecting to A url: %s\n", a_condtion_url)
-	log.Printf("Redirecting to B url: %s\n", b_condtion_url)
-	log.Printf("Redirecting to Default url: %s\n", default_condtion_url)
+	log.Printf("Proxying url: %s\n", url)
 }
 
 type requestPayloadStruct struct {
@@ -135,14 +129,46 @@ func handleRequestAndRedirect(res http.ResponseWriter, req *http.Request) {
 	log.Printf("handleRequestAndRedirect end")
 }
 
+type makeHandler struct {
+    url string
+}
+
+func (m *makeHandler) ServeHTTP (res http.ResponseWriter, req *http.Request) {
+  log.Printf("handler start")
+	//requestPayload := parseRequestBody(req)
+	url := m.url
+
+	//logRequestPayload(requestPayload, url)
+
+	serveReverseProxy(url, res, req)
+	log.Printf("handler end")
+}
+
+//func generateHandler(url) {
+//  return http.Handler("/",func(res http.ResponseWriter, req *http.Request) {
+//	log.Printf("handleRequestAndRedirect start")
+//	//requestPayload := parseRequestBody(req)
+//	//url := getProxyUrl("hi")//requestPayload.ProxyCondition)
+//
+//	//logRequestPayload(requestPayload, url)
+//
+//	serveReverseProxy(myurl, res, req)
+//	log.Printf("handleRequestAndRedirect end")
+//})
+//  
+//}
+
 
 //export runProxy
-func runProxy(port string) int {
+func runProxy(port string, url string) int {
   // Log setup values
-	logSetup(port)
+	logSetup(port, url)
 
 	// start server
-	http.HandleFunc("/", handleRequestAndRedirect)
+	my_handler := &makeHandler{ url }
+
+  http.Handle("/", my_handler)
+  
 	if err := http.ListenAndServe(getListenAddress(port), nil); err != nil {
 		panic(err)
 	}

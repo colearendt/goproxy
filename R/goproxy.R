@@ -2,6 +2,6 @@
 #'
 #' @useDynLib goproxy
 #' @export
-run_proxy <- function(port) {
-  .Call("theproxy", port, PACKAGE = "goproxy")
+run_proxy <- function(port, url) {
+  .Call("theproxy", port, url, PACKAGE = "goproxy")
 }

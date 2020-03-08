@@ -6,9 +6,11 @@
 
 //#define SHORT_VEC_LENGTH(xx) (((VECSXP) (xx))->vecsxp.length)
 
-SEXP theproxy(SEXP port) {
-  SEXP sx = STRING_ELT(port, 0);
+SEXP theproxy(SEXP port, SEXP url) {
+  SEXP sport = STRING_ELT(port, 0);
+  GoString gosport = { (char*) CHAR(sport), Rf_xlength(sport) };
   
-  GoString h = { (char*) CHAR(sx), Rf_xlength(sx) };
-  return Rf_ScalarInteger( runProxy(h) );
+  SEXP surl = STRING_ELT(url, 0);
+  GoString gosurl = { (char*) CHAR(surl), Rf_xlength(surl) };
+  return Rf_ScalarInteger( runProxy(gosport, gosurl) );
 }
