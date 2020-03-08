@@ -69,7 +69,7 @@ extern "C" {
 #endif
 
 
-extern GoInt runProxy();
+extern GoInt runProxy(GoString p0, GoString p1);
 
 #ifdef __cplusplus
 }
