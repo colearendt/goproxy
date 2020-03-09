@@ -1,13 +1,24 @@
-
+#' Run a reverse proxy directly
+#' 
+#' WARNING: this is currently not able to be interrupted. Use `run_proxy`
+#' instead.
+#' 
+#' @param url The url (with protocol) to proxy
+#' @param port The port on which to listen
+#' 
+#' @export
 run_proxy_raw <- function(url, port = "9845") {
-  #warning("This is currently not interruptible. Please use `run_proxy()` instead")
+  warn_once("`run_proxy_raw` is currently not interruptible. Please use `run_proxy()` instead")
   
   .Call("theproxy", port, url, PACKAGE = "goproxy")
 }
 
-#' Run a reverse proxy in a sub-process
+#' Run a reverse proxy
 #' 
-#' @param url The url (with protocol) to proxy
+#' Starts a reverse proxy in a subprocess (for process cleanup),
+#' but monitors the process for stdout / stderr output.
+#' 
+#' @param url The url (with protocol) to reverse proxy
 #' @param port The port on which to listen
 #' 
 #' @export
@@ -16,7 +27,7 @@ run_proxy <- function(url, port = "9845", timeout = 20) {
   message(glue::glue("Starting GoProxy on http://127.0.0.1:{port}"))
   
   server_proc <- callr::r_bg(
-    function(url, port) goproxy:::run_proxy_raw(url, port),
+    function(url, port) {options("goproxy_disable_warnings" = TRUE); goproxy::run_proxy_raw(url, port)},
     args = list(
       url = url,
       port = port
