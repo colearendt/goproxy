@@ -15,4 +15,6 @@ RoxygenNote: 7.0.2
 Imports: 
     callr,
     glue,
-    rlang
+    rlang,
+    httr,
+    rstudioapi
