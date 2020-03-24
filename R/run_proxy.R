@@ -37,7 +37,7 @@ run_proxy <- function(url, port = "9845", timeout = 20) {
   # ensure process cleans up after itself
   on.exit(server_proc$kill_tree(), add = TRUE)
   
-  # max 20 seconds wait
+  # max timeout seconds wait
   ready <- FALSE
   message("Waiting for proxy to start...")
   for (i in 1:(timeout * 10)) {
@@ -47,6 +47,10 @@ run_proxy <- function(url, port = "9845", timeout = 20) {
       stop(noop_print(server_proc$read_error_lines()))
     }
     
+    noop_print(server_proc$read_output_lines())
+    noop_print(server_proc$read_error_lines())
+    
+    # TODO: add a timeout to the request here
     try_to_connect <- try(httr::GET(glue::glue("http://127.0.0.1:{port}")), silent = TRUE)
     if (!inherits(try_to_connect, "try-error")) {
       ready <- TRUE
