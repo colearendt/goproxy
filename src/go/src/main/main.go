@@ -102,7 +102,7 @@ func serveReverseProxy(target string, res http.ResponseWriter, req *http.Request
 	log.Printf("serveReverseProxy start")
 	// parse the url
 	url, _ := url.Parse(target)
-
+	log.Printf(req.RequestURI)
 	// create the reverse proxy
 	proxy := httputil.NewSingleHostReverseProxy(url)
 
@@ -114,6 +114,10 @@ func serveReverseProxy(target string, res http.ResponseWriter, req *http.Request
 
 	// Note that ServeHttp is non blocking and uses a go routine under the hood
 	proxy.ServeHTTP(res, req)
+	
+	for k, v := range res.Header() {
+         log.Printf(k + " : " + v[0])
+  }
 	log.Printf("serveReverseProxy end")
 }
 
