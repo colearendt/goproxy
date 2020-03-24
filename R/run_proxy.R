@@ -27,7 +27,7 @@ run_proxy <- function(url, port = "9845", timeout = 20) {
   message(glue::glue("Starting GoProxy on http://127.0.0.1:{port}"))
   
   server_proc <- callr::r_bg(
-    function(url, port) {options("goproxy_disable_warnings" = TRUE); goproxy::run_proxy_raw(url, port)},
+    function(url, port) {options("goproxy_disable_warnings" = TRUE); goproxy::run_proxy_raw(url = url, port = port)},
     args = list(
       url = url,
       port = port
