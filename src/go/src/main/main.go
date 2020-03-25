@@ -3,15 +3,10 @@ package main
 import "C"
 
 import (
-	"bytes"
-	"encoding/json"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
-	"os"
-	//"strings"
 )
 
 // Get the port to listen on
